@@ -8,8 +8,8 @@ def main():
     if not capture.isOpened():
         exit()
     
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v')   # Codec để ghi video
-    out = cv2.VideoWriter('output.mp4', fourcc, 20.0, (640, 480)) # Kích thước khung hình (chiều rộng, chiều cao)
+    # fourcc = cv2.VideoWriter_fourcc(*'mp4v')   # Codec để ghi video
+    # out = cv2.VideoWriter('output.mp4', fourcc, 20.0, (640, 480)) # Kích thước khung hình (chiều rộng, chiều cao)
     
     weights = os.path.join(directory, "yunet_n_320_320.onnx")
     face_detector = cv2.FaceDetectorYN_create(weights, "", (0, 0))
@@ -42,7 +42,6 @@ def main():
             thickness = 2
             cv2.rectangle(image, box, color, thickness, cv2.LINE_AA)
 
-            # ランドマーク（右目、左目、鼻、右口角、左口角）
             landmarks = list(map(int, face[4:len(face)-1]))
             landmarks = np.array_split(landmarks, len(landmarks) / 2)
             for landmark in landmarks:
@@ -50,7 +49,6 @@ def main():
                 thickness = -1
                 cv2.circle(image, landmark, radius, color, thickness, cv2.LINE_AA)
                 
-            # 信頼度
             confidence = face[-1]
             confidence = "{:.2f}".format(confidence)
             position = (box[0], box[1] - 10)
@@ -59,7 +57,7 @@ def main():
             thickness = 2
             cv2.putText(image, confidence, position, font, scale, color, thickness, cv2.LINE_AA)
         
-        out.write(image) # Ghi khung hình vào video
+        # out.write(image) # Ghi khung hình vào video
         
         cv2.imshow("Camera", image) # Hiển thị khung hình từ camera
         key = cv2.waitKey(1) # Chờ một phím nhấn
@@ -67,7 +65,7 @@ def main():
             break
     
     capture.release() # Giải phóng tài nguyên của camera
-    out.release() # Giải phóng tài nguyên của VideoWriter
+    # out.release() # Giải phóng tài nguyên của VideoWriter
     cv2.destroyAllWindows() # Đóng tất cả các cửa sổ hiển thị
 
 if __name__ == '__main__':

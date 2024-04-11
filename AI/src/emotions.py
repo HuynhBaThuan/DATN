@@ -43,8 +43,8 @@ def plot_model_history(model_history):
     plt.show()
 
 # Define data generators
-train_dir = 'data/train'
-val_dir = 'data/test'
+train_dir = 'D:\\DHBK\\KI8\\DATN\\AI\\src\\data\\train'
+val_dir = 'D:\\DHBK\\KI8\\DATN\\AI\\src\\data\\test'
 
 num_train = 28709
 num_val = 7178
