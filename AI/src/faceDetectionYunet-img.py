@@ -4,7 +4,13 @@ import cv2
 
 def main():
     directory = os.path.dirname(__file__)
-    image_files = [os.path.join(directory, 'happy.jpg'), os.path.join(directory, 'image2.jpg')]  # Danh sách các đường dẫn đến các tệp hình ảnh
+    image_files = [os.path.join(directory, 'Training_269688.jpg'), 
+                   os.path.join(directory, 'Training_336053.jpg'),
+                   os.path.join(directory, 'Training_354740.jpg'),
+                   os.path.join(directory, 'Training_503684.jpg'),
+                   os.path.join(directory, 'Training_503990.jpg'),
+                   os.path.join(directory, 'Training_506670.jpg'),
+                   ]  # Danh sách các đường dẫn đến các tệp hình ảnh
 
     weights = os.path.join(directory, "yunet_n_320_320.onnx")
     face_detector = cv2.FaceDetectorYN_create(weights, "", (0, 0))

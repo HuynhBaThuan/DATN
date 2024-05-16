@@ -2,13 +2,15 @@ import cv2
 import numpy as np
 from keras.models import load_model
 import os
+import time
 
-model=load_model('model_file_30epochs.h5')
+# model=load_model('model_file_30epochs.h5')
+model=load_model('model/model_file.h5')
 directory = os.path.dirname(__file__)
 video=cv2.VideoCapture(0)
 
 # faceDetect=cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-weights = os.path.join(directory, "yunet_n_320_320.onnx")
+weights = os.path.join(directory, "model/yunet_n_320_320.onnx")
 faceDetect = cv2.FaceDetectorYN_create(weights, "", (0, 0))
 
 labels_dict={0:'Angry',1:'Disgust', 2:'Fear', 3:'Happy',4:'Neutral',5:'Sad',6:'Surprise'}
