@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Face Detection</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 20px;
+      }
+      #result {
+        margin-top: 20px;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Face Detection</h1>
+    <form id="uploadForm">
+      <input
+        type="file"
+        id="imageInput"
+        name="image"
+        accept="image/*"
+        required
+      />
+      <button type="submit">Upload Image</button>
+    </form>
+    <button id="hello">Say Hello</button>
+    <button id="smile">smile</button>
+    <div id="result"></div>
+
+    <script>
+      document
+        .getElementById("uploadForm")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const formData = new FormData();
+          const imageInput = document.getElementById("imageInput");
+          formData.append("image", imageInput.files[0]);
+
+          try {
+            const response = await fetch("http://127.0.0.1:5000/detect_faces", {
+              method: "POST",
+              body: formData,
+              headers: {
+                Accept: "application/json",
+              },
+              mode: "cors",
+            });
+
+            if (response.ok) {
+              const blob = await response.blob();
+              const url = URL.createObjectURL(blob);
+              document.getElementById(
+                "result"
+              ).innerHTML = `<img src="${url}" alt="Detected Faces">`;
+            } else {
+              document.getElementById("result").innerHTML =
+                "Face detection failed.";
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            document.getElementById("result").innerHTML =
+              "An error occurred while uploading the image.";
+          }
+        });
+
+      document
+        .getElementById("hello")
+        .addEventListener("click", async (event) => {
+          event.preventDefault();
+          try {
+            const response = await fetch("http://127.0.0.1:5000/hello", {
+              method: "GET",
+              headers: {
+                // "Content-Type": "application/json", // Đặt tiêu đề Content-Type là JSON
+                // Accept: "application/json",
+              },
+              //   mode: "cors",
+            });
+
+            if (response.ok) {
+              const text = await response.text(); // Read the response text
+              document.getElementById("result").innerHTML = text; // Display the text
+            } else {
+              document.getElementById("result").innerHTML =
+                "Failed to get hello message.";
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            document.getElementById("result").innerHTML =
+              "An error occurred while fetching the hello message.";
+          }
+        });
+
+      document
+        .getElementById("smile")
+        .addEventListener("click", async (event) => {
+          event.preventDefault();
+          try {
+            const formData = new FormData();
+            formData.append("smile", "smile");
+
+            const response = await fetch("http://127.0.0.1:5000/smile", {
+              method: "POST",
+              body: formData, // Sử dụng formData như một phần của body
+            });
+            console.log(response);
+            if (response.ok) {
+              const text = await response.text(); // Read the response text
+              document.getElementById("result").innerHTML = text; // Display the text
+            } else {
+              document.getElementById("result").innerHTML =
+                "Failed to get hello message.";
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            document.getElementById("result").innerHTML =
+              "An error occurred while fetching the hello message.";
+          }
+        });
+    </script>
+  </body>
+</html>
